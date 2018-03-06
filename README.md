@@ -20,7 +20,7 @@ const {
     config, timers, metrics, logger,
 } = require('node-app-base')('my-app');
 
-const requestLogger = createRequestLogger(logger);
+const requestLogger = createRequestLogger(logger, 'my-namespace');
 
 const app = require('./app')(
     requestLogger,
@@ -35,7 +35,7 @@ session middleware, make sure the session comes before storing the Ids:
 const app = express();
 
 const sessionMiddleware = session();
-const storeIdsMiddleware = require('express-utils').createStoreIdsMiddleware();
+const storeIdsMiddleware = require('express-utils').createStoreIdsMiddleware('my-namespace');
 
 app.use(sessionMiddleware)
 app.use(storeIdsMiddleware);
