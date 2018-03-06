@@ -14,7 +14,7 @@ and initialise using the `node-app-base` logger. Pass the wrapped logger to any 
 a logger.
 
 ```
-const createRequestLogger = require('express-utils').requestLogger;
+const createRequestLogger = require('express-utils').createRequestLogger;
 
 const {
     config, timers, metrics, logger,
@@ -35,7 +35,7 @@ session middleware, make sure the session comes before storing the Ids:
 const app = express();
 
 const sessionMiddleware = session();
-const storeIdsMiddleware = require('express-utils').storeIdsMiddleware();
+const storeIdsMiddleware = require('express-utils').createStoreIdsMiddleware();
 
 app.use(sessionMiddleware)
 app.use(storeIdsMiddleware);
@@ -52,7 +52,7 @@ using `app.use`.
 
 const app = express();
 
-const metricsMiddleware = require('express-utils').metricsMiddleware(logger, metrics, timers, [5, 5, 5]);
+const metricsMiddleware = require('express-utils').createMetricsMiddleware(logger, metrics, timers, [5, 5, 5]);
 
 app.use(metricsMiddleware);
 

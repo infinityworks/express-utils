@@ -1,6 +1,8 @@
 const url = require('url');
 
-module.exports = (logger, metrics, timers) => {
+module.exports = (logger, metrics, timers, buckets) => {
+
+    const [start = 5, width = 5, number = 5 ] = buckets;
 
     function logRequest(uri) {
         metrics.counter({
@@ -29,7 +31,7 @@ module.exports = (logger, metrics, timers) => {
             labels: {
                 uri: url.parse(uri).pathname,
             },
-            buckets: metrics.linearBuckets(5, 5, 5),
+            buckets: metrics.linearBuckets(start, width, number),
         });
         logger.info('http.response', { uri, duration, statusCode, sessionId, requestId });
     }

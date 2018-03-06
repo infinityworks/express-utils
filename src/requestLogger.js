@@ -1,11 +1,11 @@
 const getNamespace = require('cls-hooked').getNamespace;
 
-module.exports = (logger) => {
+module.exports = (logger, namespace) => {
     logger.info('logger.upgrade', { message: 'upgrading logger to add session and request ids by default'} );
 
     function updateLogger(level){
         return (key, data = {}) => {
-            const requestNamespace = getNamespace('group-bet-request');
+            const requestNamespace = getNamespace(namespace);
             if(typeof data !== 'object'){
                 data = {};
             }

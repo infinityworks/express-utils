@@ -1,8 +1,9 @@
 const uuid = require('uuid');
 const createNamespace = require('cls-hooked').createNamespace;
-const requestNamespace = createNamespace('group-bet-request');
 
-module.exports = () => {
+module.exports = (namespace) => {
+    const requestNamespace = createNamespace(namespace);
+
     return (req, res, next) => {
        requestNamespace.run(() => {
             req.uuid = uuid.v1();

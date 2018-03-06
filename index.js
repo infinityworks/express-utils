@@ -1,3 +1,3 @@
-exports.metricsMiddleware = require('./src/metricsMiddleware');
-exports.storeIdsMiddleware = require('./src/storeIdsMiddleware');
-exports.requestLogger = require('./src/requestLogger');
+exports.createMetricsMiddleware = require('./src/metricsMiddleware');
+exports.createStoreIdsMiddleware = require('./src/storeIdsMiddleware');
+exports.createRequestLogger = require('./src/requestLogger');
