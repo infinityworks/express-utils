@@ -31,7 +31,7 @@ module.exports = (logger, metrics, timers) => {
             },
             buckets: metrics.linearBuckets(5, 5, 5),
         });
-        logger.info('http.response', { uri, duration, statusCode, sessionId requestId });
+        logger.info('http.response', { uri, duration, statusCode, sessionId, requestId });
     }
 
     return (req, res, next) => {
