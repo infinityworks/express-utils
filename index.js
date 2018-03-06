@@ -1,3 +1,5 @@
+const createNamespace = require('cls-hooked').createNamespace;
+
 const namespace = 'sbftp-app-namespace';
 const requestNamespace = createNamespace(namespace);
 
