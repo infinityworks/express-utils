@@ -4,6 +4,9 @@ const createNamespace = require('cls-hooked').createNamespace;
 module.exports = (namespace) => {
     const requestNamespace = createNamespace(namespace);
 
+    require('cls-mysql')(requestNamespace);
+    require('cls-redis')(requestNamespace);
+
     return (req, res, next) => {
        requestNamespace.run(() => {
             req.uuid = uuid.v1();

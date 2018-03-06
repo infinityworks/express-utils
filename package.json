@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "cls-hooked": "^4.2.2",
+    "cls-mysql": "^1.0.3",
+    "cls-redis": "^1.0.3",
     "uuid": "^3.2.1"
   }
 }
