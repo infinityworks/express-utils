@@ -1,6 +1,6 @@
 const getNamespace = require('cls-hooked').getNamespace;
 
-module.exports = (logger, namespace) => {
+module.exports = (namespace, logger) => {
     logger.info('logger.upgrade', { message: 'upgrading logger to add session and request ids by default'} );
 
     function updateLogger(level){
