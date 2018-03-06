@@ -1,0 +1,15 @@
+{
+  "name": "express-utils",
+  "version": "1.0.0",
+  "description": "free-to-play express utils",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben Brunton <ben.brunton@infinityworks.com>",
+  "license": "ISC",
+  "dependencies": {
+    "cls-hooked": "^4.2.2",
+    "uuid": "^3.2.1"
+  }
+}
