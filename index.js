@@ -1,6 +1,5 @@
 const namespace = 'sbftp-app-namespace';
 const requestNamespace = createNamespace(namespace);
-const exports = {};
 
 require('cls-mysql')(requestNamespace);
 require('cls-redis')(requestNamespace);
