@@ -1,6 +1,6 @@
 const url = require('url');
 
-module.exports = (logger, metrics, timers, buckets) => {
+module.exports = (logger, metrics, timers, buckets = []) => {
 
     const [start = 5, width = 5, number = 5 ] = buckets;
 
