@@ -45,7 +45,7 @@ module.exports = (logger, metrics, timers, buckets = []) => {
 
         res.on('finish', () => {
             const duration = timers.stop(startTimeToken);
-            logResponse(req.url, duration, res, req.uuid, req.sessionID);
+            logResponse(uri, duration, res, req.uuid, req.sessionID);
         });
 
         next();
