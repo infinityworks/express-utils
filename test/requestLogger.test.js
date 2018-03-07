@@ -5,8 +5,9 @@ const sinon = require('sinon');
 
 describe('requestLogger', () => {
     let sandbox;
-    let logger = { info: () => {}, error: () => {}, warn: () => {} };
-    let namespace = 'test-ns';
+    let requestLogger;
+    const logger = { info: () => {}, error: () => {}, warn: () => {} };
+    const namespace = 'test-ns';
 
     beforeEach(() => {
         sandbox = sinon.sandbox.create();
@@ -43,7 +44,7 @@ describe('requestLogger', () => {
     });
 
     it('sets the request ID and session ID when available', (done) => {
-        let ns = createNamespace(namespace);
+        const ns = createNamespace(namespace);
         sandbox.spy(logger, 'info');
         ns.run(() => {
             ns.set('reqId', 10101);
