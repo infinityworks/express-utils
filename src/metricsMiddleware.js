@@ -39,8 +39,9 @@ module.exports = (logger, metrics, timers, buckets = []) => {
 
     return (req, res, next) => {
         const startTimeToken = timers.start();
+        const uri = req.url;
 
-        logRequest(req.url);
+        logRequest(uri);
 
         res.on('finish', () => {
             const duration = timers.stop(startTimeToken);
