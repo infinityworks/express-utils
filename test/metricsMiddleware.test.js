@@ -32,17 +32,10 @@ describe('metricsMiddleware', () => {
         assert(nextSpy.called);
     });
 
-    it('outputs request counts', () => {
-        sinon.spy(metrics, 'counter');
-
-        metricsMiddleware(req, res, next);
-        assert.equal(metrics.counter.getCall(0).args[0].name, 'request_count');
-    });
-
     it('outputs response counts', () => {
         sinon.spy(metrics, 'counter');
 
         metricsMiddleware(req, res, next);
-        assert.equal(metrics.counter.getCall(1).args[0].name, 'response_count');
+        assert.equal(metrics.counter.getCall(0).args[0].name, 'response_count');
     });
 });

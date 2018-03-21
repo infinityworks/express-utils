@@ -2,14 +2,6 @@ module.exports = (logger, metrics, timers, buckets = []) => {
     const [start = 5, width = 5, number = 5] = buckets;
 
     function logRequest(uri, method) {
-        metrics.counter({
-            name: 'request_count',
-            help: 'Total incoming HTTP requests',
-            labels: {
-                uri,
-                method,
-            },
-        });
         logger.info('http.request', { uri });
     }
 
@@ -39,14 +31,14 @@ module.exports = (logger, metrics, timers, buckets = []) => {
 
     return (req, res, next) => {
         const startTimeToken = timers.start();
-        const uri = req.route.path;
         const { method } = req;
 
-        logRequest(uri, method);
+        logRequest(req.url, method);
 
         res.on('finish', () => {
             const duration = timers.stop(startTimeToken);
-            logResponse(uri, method, duration, res, req.uuid, req.sessionID);
+            const route = req.route.path;
+            logResponse(req.route, method, duration, res, req.uuid, req.sessionID);
         });
 
         next();
