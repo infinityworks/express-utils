@@ -14,7 +14,7 @@ describe('metricsMiddleware', () => {
     beforeEach(() => {
         let cb = () => {};
         next = () => cb();
-        req = { url: '/' };
+        req = { route: { path: '/' } };
         res = {
             on: (evt, finishCb) => {
                 cb = finishCb;

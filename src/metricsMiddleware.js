@@ -1,20 +1,19 @@
-const url = require('url');
-
 module.exports = (logger, metrics, timers, buckets = []) => {
     const [start = 5, width = 5, number = 5] = buckets;
 
-    function logRequest(uri) {
+    function logRequest(uri, method) {
         metrics.counter({
             name: 'request_count',
             help: 'Total incoming HTTP requests',
             labels: {
-                uri: url.parse(uri).pathname,
+                uri,
+                method,
             },
         });
         logger.info('http.request', { uri });
     }
 
-    function logResponse(uri, duration, res, requestId, sessionId) {
+    function logResponse(uri, method, duration, res, requestId, sessionId) {
         const { statusCode } = res;
         metrics.counter({
             name: 'response_count',
@@ -28,7 +27,8 @@ module.exports = (logger, metrics, timers, buckets = []) => {
             help: 'Response time duration distribution',
             value: duration,
             labels: {
-                uri: url.parse(uri).pathname,
+                uri,
+                method,
             },
             buckets: metrics.linearBuckets(start, width, number),
         });
@@ -39,13 +39,14 @@ module.exports = (logger, metrics, timers, buckets = []) => {
 
     return (req, res, next) => {
         const startTimeToken = timers.start();
-        const uri = req.url;
+        const uri = req.route.path;
+        const { method } = req;
 
-        logRequest(uri);
+        logRequest(uri, method);
 
         res.on('finish', () => {
             const duration = timers.stop(startTimeToken);
-            logResponse(uri, duration, res, req.uuid, req.sessionID);
+            logResponse(uri, method, duration, res, req.uuid, req.sessionID);
         });
 
         next();
