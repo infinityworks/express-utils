@@ -14,7 +14,7 @@ describe('metricsMiddleware', () => {
     beforeEach(() => {
         let cb = () => {};
         next = () => cb();
-        req = { route: { path: '/' } };
+        req = { route: { path: '/' }, url: '/url' };
         res = {
             on: (evt, finishCb) => {
                 cb = finishCb;
@@ -37,5 +37,19 @@ describe('metricsMiddleware', () => {
 
         metricsMiddleware(req, res, next);
         assert.equal(metrics.counter.getCall(0).args[0].name, 'response_count');
+    });
+
+    it('uses req.route to record routing data', () => {
+        sinon.spy(metrics, 'histogram');        
+        metricsMiddleware(req, res, next);
+        assert.equal(metrics.histogram.getCall(0).args[0].labels.uri, '/');
+    });
+
+
+    it('uses req.url where route is unavailable', () => {
+        delete req.route;
+        sinon.spy(metrics, 'histogram');        
+        metricsMiddleware(req, res, next);
+        assert.equal(metrics.histogram.getCall(0).args[0].labels.uri, '/url');
     });
 });

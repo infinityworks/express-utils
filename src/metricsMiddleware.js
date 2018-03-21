@@ -1,3 +1,5 @@
+const url = require('url');
+
 module.exports = (logger, metrics, timers, buckets = []) => {
     const [start = 5, width = 5, number = 5] = buckets;
 
@@ -37,8 +39,8 @@ module.exports = (logger, metrics, timers, buckets = []) => {
 
         res.on('finish', () => {
             const duration = timers.stop(startTimeToken);
-            const route = req.route.path;
-            logResponse(req.route, method, duration, res, req.uuid, req.sessionID);
+            const route = req.route ? req.route.path : url.parse(req.url).pathname;
+            logResponse(route, method, duration, res, req.uuid, req.sessionID);
         });
 
         next();
