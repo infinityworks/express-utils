@@ -19,6 +19,7 @@ describe('metricsMiddleware', () => {
             on: (evt, finishCb) => {
                 cb = finishCb;
             },
+            statusCode: 200,
         };
         logger = { info: () => {}, warn: () => {}, error: () => {} };
         metrics = { counter: () => {}, histogram: () => {}, linearBuckets: () => {} };
@@ -51,5 +52,12 @@ describe('metricsMiddleware', () => {
         sinon.spy(metrics, 'histogram');        
         metricsMiddleware(req, res, next);
         assert.equal(metrics.histogram.getCall(0).args[0].labels.uri, '/url');
+    });
+
+    it('doesnt record histogram when the status is 404', () => {
+        sinon.spy(metrics, 'histogram');
+        res.statusCode = 404;
+        metricsMiddleware(req, res, next);
+        assert(metrics.histogram.notCalled);
     });
 });

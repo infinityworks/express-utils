@@ -9,6 +9,7 @@ module.exports = (logger, metrics, timers, buckets = []) => {
 
     function logResponse(uri, method, duration, res, requestId, sessionId) {
         const { statusCode } = res;
+
         metrics.counter({
             name: 'response_count',
             help: 'Total response count by HTTP status',
@@ -16,16 +17,20 @@ module.exports = (logger, metrics, timers, buckets = []) => {
                 statusCode,
             },
         });
-        metrics.histogram({
-            name: 'response_time_milliseconds',
-            help: 'Response time duration distribution',
-            value: duration,
-            labels: {
-                uri,
-                method,
-            },
-            buckets: metrics.linearBuckets(start, width, number),
-        });
+
+        if (res.statusCode !== 404) {
+            metrics.histogram({
+                name: 'response_time_milliseconds',
+                help: 'Response time duration distribution',
+                value: duration,
+                labels: {
+                    uri,
+                    method,
+                },
+                buckets: metrics.linearBuckets(start, width, number),
+            });
+        }
+
         logger.info('http.response', {
             uri, duration, statusCode, sessionId, requestId,
         });
