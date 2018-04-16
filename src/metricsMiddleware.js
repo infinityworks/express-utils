@@ -1,6 +1,6 @@
 const url = require('url');
 
-module.exports = (logger, metrics, timers, buckets = [], whitelist = null) => {
+module.exports = (logger, metrics, timers, buckets = [], whitelist = []) => {
     const [start = 5, width = 5, number = 5] = buckets;
 
     function logRequest(uri, method) {
@@ -37,7 +37,7 @@ module.exports = (logger, metrics, timers, buckets = [], whitelist = null) => {
     }
 
     function isInWhitelist(uri) {
-        return whitelist === null || whitelist.includes(uri);
+        return whitelist.length === 0 || whitelist.includes(uri);
     }
 
     return (req, res, next) => {

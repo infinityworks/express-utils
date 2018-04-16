@@ -54,14 +54,14 @@ describe('metricsMiddleware', () => {
         assert.equal(metrics.histogram.getCall(0).args[0].labels.uri, '/url');
     });
 
-    it('doesnt record histogram when the status is 404', () => {
+    it('does not record histogram when the status is 404', () => {
         sinon.spy(metrics, 'histogram');
         res.statusCode = 404;
         metricsMiddleware(req, res, next);
         assert(metrics.histogram.notCalled);
     });
 
-    it('doesnt record histogram when uri not in whitelist', () => {
+    it('does not record histogram when uri not in whitelist', () => {
         sinon.spy(metrics, 'histogram');
         metricsMiddleware = createMetricsMiddleware(logger, metrics, timers, [], ['/test-url']);
         metricsMiddleware(req, res, next);
