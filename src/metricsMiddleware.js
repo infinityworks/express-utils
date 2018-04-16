@@ -1,6 +1,6 @@
 const url = require('url');
 
-module.exports = (logger, metrics, timers, buckets = []) => {
+module.exports = (logger, metrics, timers, buckets = [], whitelist = null) => {
     const [start = 5, width = 5, number = 5] = buckets;
 
     function logRequest(uri, method) {
@@ -18,7 +18,7 @@ module.exports = (logger, metrics, timers, buckets = []) => {
             },
         });
 
-        if (res.statusCode !== 404) {
+        if (isInWhitelist(uri) && res.statusCode !== 404) {
             metrics.histogram({
                 name: 'response_time_milliseconds',
                 help: 'Response time duration distribution',
@@ -34,6 +34,10 @@ module.exports = (logger, metrics, timers, buckets = []) => {
         logger.info('http.response', {
             uri, duration, statusCode, sessionId, requestId,
         });
+    }
+
+    function isInWhitelist(uri) {
+        return whitelist === null || whitelist.includes(uri);
     }
 
     return (req, res, next) => {

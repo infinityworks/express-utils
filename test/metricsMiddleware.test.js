@@ -60,4 +60,19 @@ describe('metricsMiddleware', () => {
         metricsMiddleware(req, res, next);
         assert(metrics.histogram.notCalled);
     });
+
+    it('doesnt record histogram when uri not in whitelist', () => {
+        sinon.spy(metrics, 'histogram');
+        metricsMiddleware = createMetricsMiddleware(logger, metrics, timers, [], ['/test-url']);
+        metricsMiddleware(req, res, next);
+        assert(metrics.histogram.notCalled);
+    });
+
+    it('records histogram when uri is in whitelist', () => {
+        sinon.spy(metrics, 'histogram');
+        metricsMiddleware = createMetricsMiddleware(logger, metrics, timers, [], ['/test-url', '/']);
+        metricsMiddleware(req, res, next);
+        assert(metrics.histogram.called);
+    });
+
 });
