@@ -17,11 +17,6 @@ module.exports = (namespace, logger) => {
             } catch (e) {
                 logger.warn('logger.upgrade', { message: 'error augmenting log with sessionId and request Id', err: e.message });
             }
-            try {
-                updatedData.userAgent = data.userAgent || requestNamespace.get('userAgent');
-            } catch (e) {
-                logger.warn('logger.upgrade', { message: 'error augmenting log with userAgent', err: e.message });
-            }
 
             logger[level](key, updatedData);
         };

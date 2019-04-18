@@ -3,8 +3,8 @@ const url = require('url');
 module.exports = (logger, metrics, timers, buckets = [], whitelist = []) => {
     const [start = 5, width = 5, number = 5] = buckets;
 
-    function logRequest(uri, method) {
-        logger.info('http.request', { uri });
+    function logRequest(uri, userAgent) {
+        logger.info('http.request', { uri, userAgent });
     }
 
     function logResponse(uri, method, duration, res, requestId, sessionId) {
@@ -44,7 +44,7 @@ module.exports = (logger, metrics, timers, buckets = [], whitelist = []) => {
         const startTimeToken = timers.start();
         const { method } = req;
 
-        logRequest(req.url, method);
+        logRequest(req.url, req.header('User-Agent'));
 
         res.on('finish', () => {
             const duration = timers.stop(startTimeToken);
