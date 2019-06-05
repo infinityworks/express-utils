@@ -3,6 +3,15 @@ const createStoreIdsMiddleware = require('../src/storeIdsMiddleware');
 const assert = require('assert');
 const sinon = require('sinon');
 
+let headers = {};
+const stubHeaderMethod = (name) => {
+    const standardName = name.toLowerCase();
+    if (typeof headers[standardName] !== 'undefined') {
+        return headers[standardName];
+    }
+    return null;
+};
+
 describe('storeIdsMiddleware', () => {
     const namespace = 'test-ns';
     let storeIdsMiddleware;
@@ -11,7 +20,9 @@ describe('storeIdsMiddleware', () => {
     let next;
 
     beforeEach(() => {
-        req = {};
+        req = {
+            header: stubHeaderMethod
+        };
         res = {};
         next = () => {};
         storeIdsMiddleware = createStoreIdsMiddleware(namespace);
@@ -41,6 +52,18 @@ describe('storeIdsMiddleware', () => {
         const nextAssert = () => {
             const sessionId = getNamespace(namespace).get('sessionId');
             assert.equal(req.sessionID, sessionId);
+        };
+        storeIdsMiddleware(req, res, nextAssert);
+    });
+
+    it('stores correlationId where available', () => {
+        const correlationId = 'foo';
+        headers = {
+            'x-correlation-id': correlationId
+        };
+        const nextAssert = () => {
+            const actualCorrelationId = getNamespace(namespace).get('correlationId');
+            assert.equal(actualCorrelationId, correlationId);
         };
         storeIdsMiddleware(req, res, nextAssert);
     });

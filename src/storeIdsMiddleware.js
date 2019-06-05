@@ -9,6 +9,7 @@ module.exports = (namespace) => {
             req.uuid = uuid.v1();
             requestNamespace.set('reqId', req.uuid);
             requestNamespace.set('sessionId', req.sessionID);
+            requestNamespace.set('correlationId', req.header('x-correlation-id'));
             next();
         });
     };
