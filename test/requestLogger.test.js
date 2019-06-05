@@ -43,15 +43,17 @@ describe('requestLogger', () => {
         assert.equal(typeof logger.info.getCall(0).args[1], 'object');
     });
 
-    it('sets the request ID and session ID when available', (done) => {
+    it('sets the request ID, session ID and correlation ID when available', (done) => {
         const ns = createNamespace(namespace);
         sandbox.spy(logger, 'info');
         ns.run(() => {
             ns.set('reqId', 10101);
             ns.set('sessionId', 10203);
+            ns.set('correlationId', 10405);
             requestLogger.info('test.log', 'say boom boom boom, oh let me hear you say way-o!');
             assert.equal(logger.info.getCall(0).args[1].requestId, 10101);
             assert.equal(logger.info.getCall(0).args[1].sessionId, 10203);
+            assert.equal(logger.info.getCall(0).args[1].correlationId, 10405);
             done();
         });
     });
