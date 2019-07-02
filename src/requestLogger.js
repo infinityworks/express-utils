@@ -1,11 +1,11 @@
-const {getNamespace} = require('cls-hooked');
+const { getNamespace } = require('cls-hooked');
 
 module.exports = (namespace, logger) => {
     logger.info(
         'logger.upgrade',
         {
-            message: 'upgrading logger to add session, request id and correlation id by default'
-        }
+            message: 'upgrading logger to add session, request id and correlation id by default',
+        },
     );
 
     function updateLogger(level) {
@@ -25,8 +25,8 @@ module.exports = (namespace, logger) => {
                     'logger.upgrade',
                     {
                         message: 'error augmenting log with sessionId, request Id and correlation Id',
-                        err: e.message
-                    }
+                        err: e.message,
+                    },
                 );
             }
 

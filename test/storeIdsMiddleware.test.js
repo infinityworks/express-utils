@@ -21,7 +21,7 @@ describe('storeIdsMiddleware', () => {
 
     beforeEach(() => {
         req = {
-            header: stubHeaderMethod
+            header: stubHeaderMethod,
         };
         res = {};
         next = () => {};
@@ -59,7 +59,7 @@ describe('storeIdsMiddleware', () => {
     it('stores correlationId where available', () => {
         const correlationId = 'foo';
         headers = {
-            'x-correlation-id': correlationId
+            'x-correlation-id': correlationId,
         };
         const nextAssert = () => {
             const actualCorrelationId = getNamespace(namespace).get('correlationId');

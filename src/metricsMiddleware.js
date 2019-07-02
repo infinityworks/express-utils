@@ -7,6 +7,10 @@ module.exports = (logger, metrics, timers, buckets = [], whitelist = []) => {
         logger.info('http.request', { uri, userAgent });
     }
 
+    function isInWhitelist(uri) {
+        return whitelist.length === 0 || whitelist.includes(uri);
+    }
+
     function logResponse(uri, method, duration, res, requestId, sessionId) {
         const { statusCode } = res;
 
@@ -34,10 +38,6 @@ module.exports = (logger, metrics, timers, buckets = [], whitelist = []) => {
         logger.info('http.response', {
             uri, duration, statusCode, sessionId, requestId,
         });
-    }
-
-    function isInWhitelist(uri) {
-        return whitelist.length === 0 || whitelist.includes(uri);
     }
 
     return (req, res, next) => {
