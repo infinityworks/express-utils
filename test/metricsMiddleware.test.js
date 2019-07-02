@@ -78,5 +78,4 @@ describe('metricsMiddleware', () => {
         metricsMiddleware(req, res, next);
         assert(metrics.histogram.called);
     });
-
 });
